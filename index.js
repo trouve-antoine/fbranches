@@ -79,8 +79,10 @@ const fif = function(k) {
       if(kv.exec) { return kv.v(...otherArgs) }
       else { return kv.v }
     }
+		
+		const shouldTakeBranch = the_k ? (k==the_k) : k
 
-    if(k==the_k) {
+    if(shouldTakeBranch) {
       return value(then_kv)
     } else {
       return value(else_kv)

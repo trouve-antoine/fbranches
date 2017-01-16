@@ -1,5 +1,6 @@
 # fbranches
-functional version of javascript's switch and if statements
+
+A functional version of javascript's switch and if statements (beware of the `f` prefix).
 
 ## `if` statement
 
@@ -13,9 +14,19 @@ becomes
 ```
 import { fif } from 'fbranches'
 fif(k1)
-  .then(v1)
-  .else(v2)
+  .fthen(v1)
+  .felse(v2)
   .exec(k)
+```
+
+or
+
+```
+import { fif } from 'fbranches'
+fif()
+  .fthen(v1)
+  .felse(v2)
+  .exec(k==k1)
 ```
 
 ## `switch` statement
@@ -51,8 +62,8 @@ For example, with `fif`:
 ```
 import { fif } from 'fbranches'
 fif(k1)
-  .then_f(f1)
-  .else(v2)
+  .fthen_f(f1)
+  .felse(v2)
   .exec(k, a1, a2)
 ```
 
