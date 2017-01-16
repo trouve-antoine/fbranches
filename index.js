@@ -2,7 +2,7 @@ const ensure_function = (v) => {
   if(typeof(v) !== 'function') { throw new Error("Unexpected value of type" + typeof(v) + ": expected a function") }
 }
 
-export const fswitch = function() {
+const fswitch = function() {
   const the_cases = []
   let the_default = {}
 
@@ -47,7 +47,7 @@ export const fswitch = function() {
   return that
 }
 
-export const fif = function(k) {
+const fif = function(k) {
   const the_k = k
   let then_kv = {}
   let else_kv = {}
@@ -91,3 +91,5 @@ export const fif = function(k) {
 
   return that
 }
+
+module.exports = { fif, fswitch }

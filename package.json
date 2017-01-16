@@ -1,6 +1,6 @@
 {
   "name": "fbranches",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Functional versions of if and switch in javascript",
   "main": "index.js",
   "scripts": {
