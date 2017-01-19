@@ -53,6 +53,19 @@ fswitch()
   .exec(k)
 ```
 
+or
+
+```
+import { fswitch } from 'fbranches'
+fswitch(k)
+  .case(k1, v1)
+  .case(k2, v2)
+  .default(v2)
+  .eval()
+```
+
+Beware: when the condition is specified in the `fswitch()` call, we use the `eval` function, not `exec` (see the section about the smart variants for more information about `case` and `default`).
+
 ## Function variants
 
 All `fthen`, `felse`, `fcase` and `fdefault` have a variant, postfixed by `_f`, that accept a function instead of v. The arguments to the function may be passed in the exec function.
@@ -68,3 +81,8 @@ fif(k1)
 ```
 
 The `exec` function would call `f1(a1, a2)` if `k==k1`, or return `v2` otherwise.
+
+## Smart variants
+
+The `fswitch` function's return object also defines the functions `case` and `default`, that smartly dispatch between `fcase_f` and `fcase` if the second parameter is a function or not.
+Note that if you need to use `fswitch` to dispatch between function values, you must use `fcase`.

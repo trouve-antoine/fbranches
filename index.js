@@ -2,7 +2,11 @@ const ensure_function = (v) => {
   if(typeof(v) !== 'function') { throw new Error("Unexpected value of type" + typeof(v) + ": expected a function") }
 }
 
-const fswitch = function() {
+const is_function = (v) => {
+  return typeof(v) === 'function'
+}
+
+const fswitch = function(gk) {
   const the_cases = []
   let the_default = {}
 
@@ -17,6 +21,14 @@ const fswitch = function() {
     return that
   }
 
+  const unsafe_case = (k,v) => {
+    if(is_function(v)) {
+      return fcase_f(k,v)
+    } else {
+      return fcase(k,v)
+    }
+  }
+
   const fdefault = (v) => {
     the_default = { v }
     return that
@@ -26,6 +38,14 @@ const fswitch = function() {
     ensure_function(v)
     the_default = { v, exec: true }
     return that
+  }
+
+  const unsafe_default = (v) => {
+    if(is_function(v)) {
+      return fdefault_f(v)
+    } else {
+      return fdefault(v)
+    }
   }
 
   const exec = (k, ...otherArgs) => {
@@ -42,7 +62,16 @@ const fswitch = function() {
     return value(the_default)
   }
 
-  const that = { fcase, fcase_f, fdefault, fdefault_f, exec }
+  const eval = (...otherArgs) => {
+    return exec(gk, ...otherArgs)
+  }
+
+  const that = {
+    /* safe versions */
+    fcase, fcase_f, fdefault, fdefault_f, exec,
+    /* user-friendly versions */
+    case: unsafe_case, default: unsafe_default, eval
+  }
 
   return that
 }
@@ -79,7 +108,7 @@ const fif = function(k) {
       if(kv.exec) { return kv.v(...otherArgs) }
       else { return kv.v }
     }
-		
+
 		const shouldTakeBranch = the_k ? (k==the_k) : k
 
     if(shouldTakeBranch) {
