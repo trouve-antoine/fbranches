@@ -29,6 +29,18 @@ fif()
   .exec(k==k1)
 ```
 
+or
+
+```
+import { fif } from 'fbranches'
+fif(k==k1)
+  .then(v1)
+  .else(v2)
+  .eval()
+```
+
+(beware: this command uses `eval` instead of `exec`).
+
 ## `switch` statement
 
 ```
@@ -86,3 +98,5 @@ The `exec` function would call `f1(a1, a2)` if `k==k1`, or return `v2` otherwise
 
 The `fswitch` function's return object also defines the functions `case` and `default`, that smartly dispatch between `fcase_f` and `fcase` if the second parameter is a function or not.
 Note that if you need to use `fswitch` to dispatch between function values, you must use `fcase`.
+
+The same, the `fif` function's return object also defines the functions `then` and `else`.

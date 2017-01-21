@@ -88,6 +88,31 @@ describe('test fif(k) with functions', function() {
 	})
 })
 
+describe('test fif(k) / then / else / eval', function() {
+	const fif1 = fif(true).then((a,b) => a+b).else(42)
+	const fif2 = fif(false).then((a,b) => a+b).else(42)
+
+	it('then branch is taken (function)', function() {
+		assert.equal(fif1.eval(1, 1), 2)
+	})
+
+	it('else branch is taken (value)', function() {
+		assert.equal(fif2.eval(), 42)
+	})
+})
+
+describe('test fif(k) / then / else / exec', function() {
+	const fif1 = fif("k1").then((a,b) => a+b).else(42)
+
+	it('then branch is taken (function)', function() {
+		assert.equal(fif1.exec("k1", 1, 1), 2)
+	})
+
+	it('else branch is taken (value)', function() {
+		assert.equal(fif1.exec("k2"), 42)
+	})
+})
+
 describe('test fswitch() with values', function() {
 	const fsw1 = fswitch().fcase("k1", 1).fcase("k2", 2).fdefault(3)
 

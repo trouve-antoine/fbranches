@@ -76,8 +76,7 @@ const fswitch = function(gk) {
   return that
 }
 
-const fif = function(k) {
-  const the_k = k
+const fif = function(gk) {
   let then_kv = {}
   let else_kv = {}
 
@@ -92,6 +91,14 @@ const fif = function(k) {
     return that
   }
 
+  const unsafe_then = (v) => {
+    if(is_function(v)) {
+      return fthen_f(v)
+    } else {
+      return fthen(v)
+    }
+  }
+
   const felse = (v) => {
     else_kv = { v }
     return that
@@ -103,22 +110,42 @@ const fif = function(k) {
     return that
   }
 
+  const unsafe_else = (v) => {
+    if(is_function(v)) {
+      return felse_f(v)
+    } else {
+      return felse(v)
+    }
+  }
+
   const exec = (k, ...otherArgs) => {
+    const shouldTakeBranch = gk ? (k==gk) : k
+    return exec_eval(shouldTakeBranch, ...otherArgs)
+  }
+
+  const eval = (...otherArgs) => {
+    return exec_eval(gk, ...otherArgs)
+  }
+
+  const exec_eval = (shouldTakeBranch, ...otherArgs) => {
     const value = (kv) => {
       if(kv.exec) { return kv.v(...otherArgs) }
       else { return kv.v }
     }
 
-		const shouldTakeBranch = the_k ? (k==the_k) : k
-
-    if(shouldTakeBranch) {
+		if(shouldTakeBranch) {
       return value(then_kv)
     } else {
       return value(else_kv)
     }
   }
 
-  const that = { fthen, fthen_f, felse, felse_f, exec }
+  const that = {
+    /* safe, original versions */
+    fthen, fthen_f, felse, felse_f, exec,
+    /* user-friendly versions */
+    eval, then: unsafe_then, else: unsafe_else
+  }
 
   return that
 }
