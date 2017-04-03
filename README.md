@@ -78,6 +78,17 @@ fswitch(k)
 
 Beware: when the condition is specified in the `fswitch()` call, we use the `eval` function, not `exec` (see the section about the smart variants for more information about `case` and `default`).
 
+The `fswitch` statement can also be used without head value (since version 1.4):
+
+```
+import { fswitch } from 'fbranches'
+fswitch()
+  .case(some_condition, v1)
+  .case(some_other_condition, v2)
+  .default(v3)
+  .eval()
+```
+
 ## Function variants
 
 All `fthen`, `felse`, `fcase` and `fdefault` have a variant, postfixed by `_f`, that accept a function instead of v. The arguments to the function may be passed in the exec function.

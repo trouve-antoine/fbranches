@@ -49,14 +49,19 @@ const fswitch = function(gk) {
   }
 
   const exec = (k, ...otherArgs) => {
-    const value = (kv) => {
+    const value = kv => {
       if(kv.exec) { return kv.v(...otherArgs) }
       else { return kv.v }
+    }
+    
+    const cond = kv => {
+      if(k === undefined) { return kv.k }
+      return kv.k == k
     }
 
     for(let i=0; i<the_cases.length; i++) {
       const kv = the_cases[i]
-      if(kv.k == k) { return value(kv) }
+      if( cond(kv) ) { return value(kv) }
     }
 
     return value(the_default)

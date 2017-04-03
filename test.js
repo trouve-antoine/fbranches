@@ -211,3 +211,22 @@ describe('test fswitch() head parameter', function() {
 		assert.equal(fsw3.eval(1), 4)
 	})
 })
+
+describe('test fswitch() with no value', function() {
+	const fsw1 = fswitch().case(true, a => a+1).case(false, 3).default(4)
+	const fsw2 = fswitch().case(false, a => a+1).case(true, 3).default(4)
+	const fsw3 = fswitch().case(false, a => a+1).case(false, 3).default(4)
+
+
+	it("first case is taken", function(){
+		assert.equal(fsw1.eval(1), 2)
+	})
+
+	it("second case is taken", function(){
+		assert.equal(fsw2.eval(1), 3)
+	})
+
+	it("default case is taken", function(){
+		assert.equal(fsw3.eval(1), 4)
+	})
+})
