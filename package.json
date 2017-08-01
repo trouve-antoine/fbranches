@@ -1,9 +1,10 @@
 {
   "name": "fbranches",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Functional versions of if and switch in javascript",
   "main": "index.js",
   "scripts": {
+    "build": "babel --presets es2015 src/index.js -o ./index.js",
     "test": "mocha test.js"
   },
   "repository": {
@@ -22,6 +23,8 @@
   },
   "homepage": "https://github.com/trouve-antoine/fbranches#readme",
   "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
     "chai": "^3.5.0"
   }
 }

@@ -1,158 +1,194 @@
-const ensure_function = (v) => {
-  if(typeof(v) !== 'function') { throw new Error("Unexpected value of type" + typeof(v) + ": expected a function") }
-}
+"use strict";
 
-const is_function = (v) => {
-  return typeof(v) === 'function'
-}
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-const fswitch = function(gk) {
-  const the_cases = []
-  let the_default = {}
-
-  const fcase = (k, v) => {
-    the_cases.push({ k, v })
-    return that
+var ensure_function = function ensure_function(v) {
+  if (typeof v !== 'function') {
+    throw new Error("Unexpected value of type" + (typeof v === "undefined" ? "undefined" : _typeof(v)) + ": expected a function");
   }
+};
 
-  const fcase_f = (k, v) => {
-    ensure_function(v)
-    the_cases.push({ k, v, exec: true })
-    return that
-  }
+var is_function = function is_function(v) {
+  return typeof v === 'function';
+};
 
-  const unsafe_case = (k,v) => {
-    if(is_function(v)) {
-      return fcase_f(k,v)
+var fswitch = function fswitch(gk) {
+  var the_cases = [];
+  var the_default = {};
+
+  var fcase = function fcase(k, v) {
+    the_cases.push({ k: k, v: v });
+    return that;
+  };
+
+  var fcase_f = function fcase_f(k, v) {
+    ensure_function(v);
+    the_cases.push({ k: k, v: v, exec: true });
+    return that;
+  };
+
+  var unsafe_case = function unsafe_case(k, v) {
+    if (is_function(v)) {
+      return fcase_f(k, v);
     } else {
-      return fcase(k,v)
+      return fcase(k, v);
     }
-  }
+  };
 
-  const fdefault = (v) => {
-    the_default = { v }
-    return that
-  }
+  var fdefault = function fdefault(v) {
+    the_default = { v: v };
+    return that;
+  };
 
-  const fdefault_f = (v) => {
-    ensure_function(v)
-    the_default = { v, exec: true }
-    return that
-  }
+  var fdefault_f = function fdefault_f(v) {
+    ensure_function(v);
+    the_default = { v: v, exec: true };
+    return that;
+  };
 
-  const unsafe_default = (v) => {
-    if(is_function(v)) {
-      return fdefault_f(v)
+  var unsafe_default = function unsafe_default(v) {
+    if (is_function(v)) {
+      return fdefault_f(v);
     } else {
-      return fdefault(v)
+      return fdefault(v);
     }
-  }
+  };
 
-  const exec = (k, ...otherArgs) => {
-    const value = kv => {
-      if(kv.exec) { return kv.v(...otherArgs) }
-      else { return kv.v }
-    }
-    
-    const cond = kv => {
-      if(k === undefined) { return kv.k }
-      return kv.k == k
+  var exec = function exec(k) {
+    for (var _len = arguments.length, otherArgs = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      otherArgs[_key - 1] = arguments[_key];
     }
 
-    for(let i=0; i<the_cases.length; i++) {
-      const kv = the_cases[i]
-      if( cond(kv) ) { return value(kv) }
+    var value = function value(kv) {
+      if (kv.exec) {
+        return kv.v.apply(kv, otherArgs);
+      } else {
+        return kv.v;
+      }
+    };
+
+    var cond = function cond(kv) {
+      if (k === undefined) {
+        return kv.k;
+      }
+      return kv.k == k;
+    };
+
+    for (var i = 0; i < the_cases.length; i++) {
+      var kv = the_cases[i];
+      if (cond(kv)) {
+        return value(kv);
+      }
     }
 
-    return value(the_default)
-  }
+    return value(the_default);
+  };
 
-  const eval = (...otherArgs) => {
-    return exec(gk, ...otherArgs)
-  }
+  var _eval = function _eval() {
+    for (var _len2 = arguments.length, otherArgs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      otherArgs[_key2] = arguments[_key2];
+    }
 
-  const that = {
+    return exec.apply(undefined, [gk].concat(otherArgs));
+  };
+
+  var that = {
     /* safe versions */
-    fcase, fcase_f, fdefault, fdefault_f, exec,
+    fcase: fcase, fcase_f: fcase_f, fdefault: fdefault, fdefault_f: fdefault_f, exec: exec,
     /* user-friendly versions */
-    case: unsafe_case, default: unsafe_default, eval
-  }
+    case: unsafe_case, default: unsafe_default, eval: _eval
+  };
 
-  return that
-}
+  return that;
+};
 
-const fif = function(gk) {
-  let then_kv = {}
-  let else_kv = {}
+var fif = function fif(gk) {
+  var then_kv = {};
+  var else_kv = {};
 
-  const fthen = (v) => {
-    then_kv = { v }
-    return that
-  }
+  var fthen = function fthen(v) {
+    then_kv = { v: v };
+    return that;
+  };
 
-  const fthen_f = (v) => {
-    ensure_function(v)
-    then_kv = { v, exec: true }
-    return that
-  }
+  var fthen_f = function fthen_f(v) {
+    ensure_function(v);
+    then_kv = { v: v, exec: true };
+    return that;
+  };
 
-  const unsafe_then = (v) => {
-    if(is_function(v)) {
-      return fthen_f(v)
+  var unsafe_then = function unsafe_then(v) {
+    if (is_function(v)) {
+      return fthen_f(v);
     } else {
-      return fthen(v)
+      return fthen(v);
     }
-  }
+  };
 
-  const felse = (v) => {
-    else_kv = { v }
-    return that
-  }
+  var felse = function felse(v) {
+    else_kv = { v: v };
+    return that;
+  };
 
-  const felse_f = (v) => {
-    ensure_function(v)
-    else_kv = { v, exec: true }
-    return that
-  }
+  var felse_f = function felse_f(v) {
+    ensure_function(v);
+    else_kv = { v: v, exec: true };
+    return that;
+  };
 
-  const unsafe_else = (v) => {
-    if(is_function(v)) {
-      return felse_f(v)
+  var unsafe_else = function unsafe_else(v) {
+    if (is_function(v)) {
+      return felse_f(v);
     } else {
-      return felse(v)
+      return felse(v);
     }
-  }
+  };
 
-  const exec = (k, ...otherArgs) => {
-    const shouldTakeBranch = gk ? (k==gk) : k
-    return exec_eval(shouldTakeBranch, ...otherArgs)
-  }
-
-  const eval = (...otherArgs) => {
-    return exec_eval(gk, ...otherArgs)
-  }
-
-  const exec_eval = (shouldTakeBranch, ...otherArgs) => {
-    const value = (kv) => {
-      if(kv.exec) { return kv.v(...otherArgs) }
-      else { return kv.v }
+  var exec = function exec(k) {
+    for (var _len3 = arguments.length, otherArgs = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+      otherArgs[_key3 - 1] = arguments[_key3];
     }
 
-		if(shouldTakeBranch) {
-      return value(then_kv)
+    var shouldTakeBranch = gk ? k == gk : k;
+    return exec_eval.apply(undefined, [shouldTakeBranch].concat(otherArgs));
+  };
+
+  var _eval = function _eval() {
+    for (var _len4 = arguments.length, otherArgs = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+      otherArgs[_key4] = arguments[_key4];
+    }
+
+    return exec_eval.apply(undefined, [gk].concat(otherArgs));
+  };
+
+  var exec_eval = function exec_eval(shouldTakeBranch) {
+    for (var _len5 = arguments.length, otherArgs = Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
+      otherArgs[_key5 - 1] = arguments[_key5];
+    }
+
+    var value = function value(kv) {
+      if (kv.exec) {
+        return kv.v.apply(kv, otherArgs);
+      } else {
+        return kv.v;
+      }
+    };
+
+    if (shouldTakeBranch) {
+      return value(then_kv);
     } else {
-      return value(else_kv)
+      return value(else_kv);
     }
-  }
+  };
 
-  const that = {
+  var that = {
     /* safe, original versions */
-    fthen, fthen_f, felse, felse_f, exec,
+    fthen: fthen, fthen_f: fthen_f, felse: felse, felse_f: felse_f, exec: exec,
     /* user-friendly versions */
-    eval, then: unsafe_then, else: unsafe_else
-  }
+    eval: _eval, then: unsafe_then, else: unsafe_else
+  };
 
-  return that
-}
+  return that;
+};
 
-module.exports = { fif, fswitch }
+module.exports = { fif: fif, fswitch: fswitch };
